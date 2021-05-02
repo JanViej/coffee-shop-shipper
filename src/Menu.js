@@ -1,59 +1,20 @@
-import React, {useState, useEffect} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
   Dimensions,
   Text,
   View,
   StyleSheet,
-  ScrollView,
   ImageBackground,
-  TouchableOpacity,
-  ActivityIndicator,
+  FlatList,
+  TouchableOpacity
 } from 'react-native';
-import {get, debounce} from 'lodash';
-import {SearchBar} from 'react-native-elements';
-import {getCategory, getDrink} from './redux/drink/actions';
-import {actions as drinkActions} from './redux/drink/slice';
-import MenuItem from './components/MenuItem';
-import wave from './assets/image/wave.png';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import Coffee from './assets/image/coffee.svg';
+import wave from './assets/image/wave.png';
 
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-  },
-  input: {
-    backgroundColor: '#64A1BD',
-    color: '#fff',
-    padding: 0,
-    margin: 0,
-    textAlign: 'right',
-  },
-  category: {
-    paddingTop: 8,
-    marginHorizontal: 20,
-  },
-  categoryItem: {
-    marginRight: 15,
-    fontSize: 18,
-    color: '#c5dfe7',
-    fontWeight: '500',
-  },
-  searchBarContainer: {
-    borderBottomColor: 'transparent',
-    borderTopColor: 'transparent',
-    backgroundColor: '#64A1BD',
-    borderWidth: 0,
-    marginTop: 6,
-    padding: 0,
-    flex: 6,
-  },
-  inputContainer: {
-    backgroundColor: '#64A1BD',
-    padding: 0,
-    margin: 0,
-    flexDirection: 'row-reverse',
   },
   title: {
     color: '#fff',
@@ -61,35 +22,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginHorizontal: 20,
     paddingTop: 5,
-  },
-  scrollView: {
-    flex: 1,
-  },
-  spinner: {
-    height: 300,
-    width: Dimensions.get('window').width,
-    justifyContent: 'center',
+    paddingRight: 20,
   },
   image: {
     height: Dimensions.get('window').height - 135,
-  },
-  imageBackground: {height: 300},
-  secondaryText: {
-    color: '#404d4d',
-  },
-  horizonList: {
-    marginBottom: 20,
   },
   header: {
     flexDirection: 'row',
     backgroundColor: '#64A1BD',
     alignItems: 'center',
-  },
-  cart: {
-    flex: 1,
-    margin: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
+    padding: 10,
   },
   logo: {
     flex: 1,
@@ -104,119 +46,178 @@ const styles = StyleSheet.create({
     padding: 10,
     // marginTop: 5,
   },
+  image: {
+    height: Dimensions.get('window').height - 135,
+  },
+  imageBackground: { height: 300 },
+  secondaryText: {
+    color: '#404d4d',
+  },
+  titleDS: {
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginHorizontal: 20,
+    paddingTop: 20,
+    paddingBottom: 10,
+  },
+  overview: {
+    flex: 5,
+    alignItems: 'flex-start',
+    backgroundColor: 'powderblue',
+    padding: 15,
+    margin: 10,
+    borderRadius: 20,
+  },
+  textviewDetails: {
+    fontSize: 15,
+    alignItems: 'center',
+    paddingTop: 5,
+    fontWeight: 'bold'
+  },
+  donhang: {
+    fontSize: 15,
+    fontWeight: 'bold'
+  },
+  diachi: {
+    paddingTop: 5,
+  },
+  trangthai: {
+    paddingTop: 2,
+  },
+  ngaytao: {
+    paddingTop: 2,
+  }
 });
-
-const Menu = ({navigation}) => {
-  const dispatch = useDispatch();
-  const [searchingText, setSearchingText] = useState('');
-  const categories = useSelector(state => state.drink.categories);
-  const drinks = useSelector(state => state.drink.drinks);
-  const loading = useSelector(state => state.drink.loading);
-
-  const currentCategory = useSelector(state => state.drink.currentCategory);
-
-  const updateSearch = search => {
-    setSearchingText(search);
-    debounce(() => dispatch(getDrink({keyword: search})), 800)();
-  };
-
-  const onClickItem = id => {
-    navigation.navigate('Details', {
-      id,
-    });
-  };
-
-  const onClickCart = () => {
-    navigation.push('Cart');
-  };
-
-  const handleSelectCategory = category => () => {
-    dispatch(drinkActions.setCurrentCategory(category));
-  };
-
-  useEffect(() => {
-    dispatch(getDrink());
-    dispatch(getCategory()).then(({payload: {data}}) =>
-      dispatch(drinkActions.setCurrentCategory(get(data, 'data.0', {}))),
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
+const dataList = [
+  {
+    id: "60741a2d45dbfe7a1ef3eced",
+    user: {
+      id: "607159aff54dc91eeccd0075",
+      username: "user02",
+      address: "191 Lê Lợi"
+    },
+    drink: [
+      {
+        id: "6059adaef8d95f487316051a",
+        name: "trà sữa trân châu đường đỏ",
+        price: 192,
+        quantity: 2
+      },
+      {
+        id: "6059b16670e4e5f618f71f34",
+        name: "trà sữa trân châu đường đen",
+        price: 19,
+        quantity: 1
+      }
+    ],
+    status: "success",
+    totalPrice: 403,
+    createdAt: "2021-04-12T10:00:13.172Z"
+  },
+  {
+    id: "60814cb081c5800e57bbc272",
+    user: {
+      id: "607159aff54dc91eeccd0075",
+      username: "user02",
+      address: "191 Lê Lợi"
+    },
+    drink: [
+      {
+        id: "6059b16670e4e5f618f71f34",
+        name: "trà sữa trân châu đường đen",
+        price: 19,
+        quantity: 1
+      },
+      {
+        id: "6059b16670e4e5f618f71f34",
+        name: "trà sữa trân châu đường đen",
+        price: 19,
+        quantity: 1
+      }
+    ],
+    status: "pending",
+    totalPric: 38,
+    createdAt: "2021-04-22T10:15:12.014Z"
+  },
+  {
+    id: "60814d3381c5800e57bbc273",
+    user: {
+      id: "607159aff54dc91eeccd0075",
+      "username": "user02",
+      "address": "191 Lê Lợi"
+    },
+    drink: [
+      {
+        id: "6059b16670e4e5f618f71f34",
+        name: "trà sữa trân châu đường đen",
+        price: 19,
+        quantity: 1
+      },
+      {
+        id: "6059b16670e4e5f618f71f34",
+        name: "trà sữa trân châu đường đen",
+        price: 19,
+        quantity: 5
+      }
+    ],
+    status: "pending",
+    totalPrice: 114,
+    createdAt: "2021-04-22T10:17:23.117Z"
+  }
+]
+const Menu = ({ navigation }) => {
+  const [orders, setOrders] = React.useState({})
+  useEffect (()=>{
+    fetch("https://salty-dawn-54578.herokuapp.com/orders", {
+      "method": "GET",
+      "headers": {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 
+          'Bearer ' + 
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcxMGIzMmUzZDFhOGZlMjBjYWVhOTkiLCJwYXNzd29yZCI6IjEyMzQ1Njc4IiwidXNlcm5hbWUiOiJzaGlwcGVyIn0.kTZpKT8NkEnDksk1OMJ2aQ52Yk7JximxzxjSuV4OU7s',
+      }
+    })
+      .then(response => response.json())
+      .then(response => {
+        setOrders(response);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  } );
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Coffee style={styles.logo} height={35} width={35} />
-        <SearchBar
-          style={styles.searchBar}
-          placeholder="Find your drink..."
-          onChangeText={updateSearch}
-          value={searchingText}
-          lightTheme
-          inputStyle={styles.input}
-          containerStyle={styles.searchBarContainer}
-          inputContainerStyle={styles.inputContainer}
-          placeholderTextColor={'#fff'}
-          searchIcon={{color: '#fff', size: 30}}
-        />
-        <TouchableOpacity style={styles.cart} onPress={onClickCart}>
-          <Ionicons name="cart" color="#fff" size={30} />
-        </TouchableOpacity>
+        <Text style={styles.title}>Shipper</Text>
       </View>
       <ImageBackground
         source={wave}
         style={styles.image}
         imageStyle={styles.imageBackground}>
-        <ScrollView style={styles.scrollView}>
-          <Text style={styles.title}>Best Coffee In Town</Text>
-          <ScrollView horizontal style={styles.category}>
-            {categories.map(category => (
-              <TouchableOpacity
-                onPress={handleSelectCategory(category)}
-                key={category._id}>
-                <Text
-                  style={{
-                    ...styles.categoryItem,
-                    ...(currentCategory._id === category._id && {
-                      color: '#fff',
-                      fontWeight: 'bold',
-                    }),
-                  }}>
-                  {category.name}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-          <ScrollView horizontal style={styles.horizonList}>
-            {loading && (
-              <View style={styles.spinner}>
-                <ActivityIndicator size="large" color="#17729c" />
+        <Text style={styles.titleDS}>Danh sách đơn hàng</Text>
+
+        <FlatList
+          data={dataList}
+          renderItem={({ item }) => <View style={styles.overview}>
+            <Text style={styles.donhang}>Đơn hàng #{item.id}</Text>
+            <Text style={styles.diachi}>Địa chỉ: {item.user.address}</Text>
+            <Text style={styles.trangthai}>Trạng thái:{item.status}</Text>
+            <Text style={styles.ngaytao}>Ngày tạo: {item.createdAt}</Text>
+            <TouchableOpacity onPress={() => navigation.push("Details", { item: item })}>
+              <View style={styles.viewDetails}>
+                <Text style={styles.textviewDetails}>Xem chi tiết </Text>
               </View>
-            )}
-            {drinks.map(drink => (
-              <MenuItem onClickItem={onClickItem} {...drink} key={drink._id} />
-            ))}
-          </ScrollView>
-          {/* <Text
-            style={{
-              ...styles.title,
-              ...styles.secondaryText,
-            }}>
-            Most popular
-          </Text>
-          <ScrollView horizontal style={styles.horizonList}>
-            {menus.map(menu => (
-              <MenuItem
-                onClickItem={onClickItem}
-                key={menu.id}
-                {...menu}
-                imageHeight={150}
-              />
-            ))}
-          </ScrollView> */}
-        </ScrollView>
+            </TouchableOpacity>
+          </View>}
+          keyExtractor={item => '${item.id}'}
+          contentContainerStyle={{ paddingLeft: 16, paddingRight: 16 }}
+        />
+        <Text>{orders.id}</Text>
       </ImageBackground>
     </View>
   );
 };
-
 export default Menu;

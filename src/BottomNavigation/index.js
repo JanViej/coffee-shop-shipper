@@ -4,7 +4,7 @@ import {createMaterialBottomTabNavigator} from '@react-navigation/material-botto
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import Menu from '../Menu';
-import Details from '../ItemDetails';
+import Details from '../Details';
 import Cart from '../Cart';
 import Account from '../Account';
 import History from '../History';
