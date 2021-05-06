@@ -32,25 +32,6 @@ export const logout = createAsyncThunk(
   },
 );
 
-// export const updateUser = createAsyncThunk(
-//   'user/update',
-//   async (payload, thunkAPI) => {
-//     try {
-//       const token = thunkAPI.getState().user.token;
-//       const {data} = await apiWrapper({}, updateUserApi, payload, {
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//         },
-//       });
-//       console.log("update", data);
-
-//       return data;
-//     } catch (error) {
-//       return thunkAPI.rejectWithValue();
-//     }
-//   },
-// );
-
 export const getMe = createAsyncThunk(
   'staff/getMe',
   async (payload, thunkAPI) => {
@@ -62,7 +43,6 @@ export const getMe = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log('get me', data);
       return data;
     } catch (error) {
       console.log('err', error);

@@ -1,5 +1,4 @@
 import {createSlice} from '@reduxjs/toolkit';
-import { removeData } from '../../utils';
 import {login, logout, getMe} from './actions';
 
 export const initialState = {
@@ -39,12 +38,6 @@ export const {reducer, actions} = createSlice({
       state.isAuthenticated = false;
       state.token = '';
     },
-    // [updateUser.pending]: state => {
-    //   state.loading = false;
-    // },
-    // [updateUser.fulfilled]: (state, {payload}) => {
-    //   state.data = payload.data.data;
-    // },
     [getMe.fulfilled]: (state, {payload}) => {
       state.data = payload.data.data;
     }

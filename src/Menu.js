@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useDispatch, useSelector } from 'react-redux';
+import { getListOrder } from './redux/order/action'
 import {
   Dimensions,
   Text,
   View,
   StyleSheet,
   ImageBackground,
-  FlatList,
+  ScrollView,
   TouchableOpacity
 } from 'react-native';
 import Coffee from './assets/image/coffee.svg';
+import OrderCard from './components/OrderCard'
 import wave from './assets/image/wave.png';
 
 const styles = StyleSheet.create({
@@ -60,9 +62,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     paddingTop: 20,
     paddingBottom: 10,
+    textAlign: 'center'
   },
   overview: {
-    flex: 5,
     alignItems: 'flex-start',
     backgroundColor: 'powderblue',
     padding: 15,
@@ -89,54 +91,14 @@ const styles = StyleSheet.create({
     paddingTop: 2,
   }
 });
-const dataList = [
-  {
-    id: "60814d3381c5800e57bbc273",
-    user: {
-      id: "607159aff54dc91eeccd0075",
-      "username": "user02",
-      "address": "191 Lê Lợi"
-    },
-    drink: [
-      {
-        id: "6059b16670e4e5f618f71f34",
-        name: "trà sữa trân châu đường đen",
-        price: 19,
-        quantity: 1
-      },
-      {
-        id: "6059b16670e4e5f618f71f34",
-        name: "trà sữa trân châu đường đen",
-        price: 19,
-        quantity: 5
-      }
-    ],
-    status: "pending",
-    totalPrice: 114,
-    createdAt: "2021-04-22T10:17:23.117Z"
-  }
-]
 const Menu = ({ navigation }) => {
-  // const [orders, setOrders] = React.useState({})
-  // useEffect (()=>{
-  //   fetch("https://salty-dawn-54578.herokuapp.com/orders", {
-  //     "method": "GET",
-  //     "headers": {
-  //       'Accept': 'application/json',
-  //       'Content-Type': 'application/json',
-  //       'Authorization': 
-  //         'Bearer ' + 
-  //         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcxMGIzMmUzZDFhOGZlMjBjYWVhOTkiLCJwYXNzd29yZCI6IjEyMzQ1Njc4IiwidXNlcm5hbWUiOiJzaGlwcGVyIn0.kTZpKT8NkEnDksk1OMJ2aQ52Yk7JximxzxjSuV4OU7s',
-  //     }
-  //   })
-  //     .then(response => response.json())
-  //     .then(response => {
-  //       setOrders(response);
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //     });
-  // } );
+  const dispatch = useDispatch();
+  const orders = useSelector(state => state.order.listOrder);
+  useEffect(() => {
+    dispatch(getListOrder());
+  }, []);
+  console.log('json order', orders);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -148,24 +110,21 @@ const Menu = ({ navigation }) => {
         style={styles.image}
         imageStyle={styles.imageBackground}>
         <Text style={styles.titleDS}>Danh sách đơn hàng</Text>
-
-        <FlatList
-          data={dataList}
-          renderItem={({ item }) => <View style={styles.overview}>
-            <Text style={styles.donhang}>Đơn hàng #{item.id}</Text>
-            <Text style={styles.diachi}>Địa chỉ: {item.user.address}</Text>
-            <Text style={styles.trangthai}>Trạng thái:{item.status}</Text>
-            <Text style={styles.ngaytao}>Ngày tạo: {item.createdAt}</Text>
-            <TouchableOpacity onPress={() => navigation.push("Details", { item: item })}>
-              <View style={styles.viewDetails}>
-                <Text style={styles.textviewDetails}>Xem chi tiết </Text>
-              </View>
-            </TouchableOpacity>
-          </View>}
-          // keyExtractor={item => '${item.id}'}
-          contentContainerStyle={{ paddingLeft: 16, paddingRight: 16 }}
-        />
-        {/* <Text>{orders.id}</Text> */}
+        <ScrollView>
+          {orders.order.map((item,index) => (
+            <View style={styles.overview}>
+              <Text style={styles.donhang}>Đơn hàng #{item._id}</Text>
+              <Text style={styles.diachi}>Địa chỉ: {item.user.address}</Text>
+              <Text style={styles.trangthai}>Trạng thái:{item.status}</Text>
+              <Text style={styles.ngaytao}>Ngày tạo: {item.createdAt}</Text>
+              <TouchableOpacity onPress={() => navigation.push("Details", { item: item })}>
+                <View style={styles.viewDetails}>
+                  <Text style={styles.textviewDetails}>Xem chi tiết </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          ))}
+        </ScrollView>
       </ImageBackground>
     </View>
   );
