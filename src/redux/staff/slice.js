@@ -1,0 +1,54 @@
+import {createSlice} from '@reduxjs/toolkit';
+import { removeData } from '../../utils';
+import {login, logout, getMe} from './actions';
+
+export const initialState = {
+  data: [],
+  loading: false,
+  isAuthenticated: false,
+  token: '',
+  isActive: false,
+};
+
+export const {reducer, actions} = createSlice({
+  name: 'Staff',
+  initialState,
+  reducers: {
+    setToken: (state, {payload}) => {
+      state.token = payload;
+      state.isAuthenticated = true;
+    },
+    setActive: (state, {payload}) => {
+      state.isActive = payload;
+    }
+  },
+  extraReducers: {
+    [login.fulfilled]: (state, {payload}) => {
+      state.data = payload.data.data;
+      state.isAuthenticated = true;
+      state.token = payload.data.data.token;
+      state.loading = false;
+    },
+    [login.pending]: state => {
+      state.loading = true;
+    },
+    [login.rejected]: (state, {payload}) => {
+      state.loading = false;
+    },
+    [logout.fulfilled]: (state) => {
+      state.isAuthenticated = false;
+      state.token = '';
+    },
+    // [updateUser.pending]: state => {
+    //   state.loading = false;
+    // },
+    // [updateUser.fulfilled]: (state, {payload}) => {
+    //   state.data = payload.data.data;
+    // },
+    [getMe.fulfilled]: (state, {payload}) => {
+      state.data = payload.data.data;
+    }
+  },
+});
+
+export default reducer;

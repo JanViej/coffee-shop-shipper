@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useState} from 'react';
+import {useDispatch} from 'react-redux';
 import {
   Text,
   View,
@@ -8,6 +9,7 @@ import {
 } from 'react-native';
 import {Button} from 'react-native-elements';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {login} from './redux/staff/actions';
 
 const styles = StyleSheet.create({
   container: {
@@ -71,7 +73,23 @@ const styles = StyleSheet.create({
 });
 
 const Login = ({navigation}) => {
-  const onClickLogin = () => {};
+  const dispatch = useDispatch();
+  const [inputUsername, onChangeInputUsername] = useState('');
+  const [inputPassword, onChangeInputPassword] = useState('');
+
+  console.log('inputUsername', inputUsername);
+
+  const onClickLogin = () => {
+    if(inputUsername.trim() && inputPassword.trim()) {
+      dispatch(login({
+        username: inputUsername,
+        password: inputPassword,
+      })).then(response => {
+        if (!response.error)
+          navigation.push('Splash');
+      })
+    }
+  };
 
   const onClickSignUp = () => {
     console.log('hihi');
@@ -84,9 +102,9 @@ const Login = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.back} onPress={onClickBack}>
+      {/* <TouchableOpacity style={styles.back} onPress={onClickBack}>
         <AntDesign name="left" color="#fff" size={18} />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <View style={styles.header}>
         <Text style={styles.title}>Hey,</Text>
         <Text style={styles.title}>Login Now.</Text>
@@ -102,12 +120,16 @@ const Login = ({navigation}) => {
           style={styles.input}
           placeholder="Username"
           placeholderTextColor="#5ca4b8"
+          onChangeText={onChangeInputUsername}
+        value={inputUsername}
         />
         <TextInput
           style={styles.input}
           secureTextEntry={true}
           placeholder="Password"
           placeholderTextColor="#5ca4b8"
+          onChangeText={onChangeInputPassword}
+        value={inputPassword}
         />
       </View>
       <Button

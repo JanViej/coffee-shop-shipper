@@ -91,56 +91,6 @@ const styles = StyleSheet.create({
 });
 const dataList = [
   {
-    id: "60741a2d45dbfe7a1ef3eced",
-    user: {
-      id: "607159aff54dc91eeccd0075",
-      username: "user02",
-      address: "191 Lê Lợi"
-    },
-    drink: [
-      {
-        id: "6059adaef8d95f487316051a",
-        name: "trà sữa trân châu đường đỏ",
-        price: 192,
-        quantity: 2
-      },
-      {
-        id: "6059b16670e4e5f618f71f34",
-        name: "trà sữa trân châu đường đen",
-        price: 19,
-        quantity: 1
-      }
-    ],
-    status: "success",
-    totalPrice: 403,
-    createdAt: "2021-04-12T10:00:13.172Z"
-  },
-  {
-    id: "60814cb081c5800e57bbc272",
-    user: {
-      id: "607159aff54dc91eeccd0075",
-      username: "user02",
-      address: "191 Lê Lợi"
-    },
-    drink: [
-      {
-        id: "6059b16670e4e5f618f71f34",
-        name: "trà sữa trân châu đường đen",
-        price: 19,
-        quantity: 1
-      },
-      {
-        id: "6059b16670e4e5f618f71f34",
-        name: "trà sữa trân châu đường đen",
-        price: 19,
-        quantity: 1
-      }
-    ],
-    status: "pending",
-    totalPric: 38,
-    createdAt: "2021-04-22T10:15:12.014Z"
-  },
-  {
     id: "60814d3381c5800e57bbc273",
     user: {
       id: "607159aff54dc91eeccd0075",
@@ -167,26 +117,26 @@ const dataList = [
   }
 ]
 const Menu = ({ navigation }) => {
-  const [orders, setOrders] = React.useState({})
-  useEffect (()=>{
-    fetch("https://salty-dawn-54578.herokuapp.com/orders", {
-      "method": "GET",
-      "headers": {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': 
-          'Bearer ' + 
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcxMGIzMmUzZDFhOGZlMjBjYWVhOTkiLCJwYXNzd29yZCI6IjEyMzQ1Njc4IiwidXNlcm5hbWUiOiJzaGlwcGVyIn0.kTZpKT8NkEnDksk1OMJ2aQ52Yk7JximxzxjSuV4OU7s',
-      }
-    })
-      .then(response => response.json())
-      .then(response => {
-        setOrders(response);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  } );
+  // const [orders, setOrders] = React.useState({})
+  // useEffect (()=>{
+  //   fetch("https://salty-dawn-54578.herokuapp.com/orders", {
+  //     "method": "GET",
+  //     "headers": {
+  //       'Accept': 'application/json',
+  //       'Content-Type': 'application/json',
+  //       'Authorization': 
+  //         'Bearer ' + 
+  //         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcxMGIzMmUzZDFhOGZlMjBjYWVhOTkiLCJwYXNzd29yZCI6IjEyMzQ1Njc4IiwidXNlcm5hbWUiOiJzaGlwcGVyIn0.kTZpKT8NkEnDksk1OMJ2aQ52Yk7JximxzxjSuV4OU7s',
+  //     }
+  //   })
+  //     .then(response => response.json())
+  //     .then(response => {
+  //       setOrders(response);
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     });
+  // } );
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -212,10 +162,10 @@ const Menu = ({ navigation }) => {
               </View>
             </TouchableOpacity>
           </View>}
-          keyExtractor={item => '${item.id}'}
+          // keyExtractor={item => '${item.id}'}
           contentContainerStyle={{ paddingLeft: 16, paddingRight: 16 }}
         />
-        <Text>{orders.id}</Text>
+        {/* <Text>{orders.id}</Text> */}
       </ImageBackground>
     </View>
   );

@@ -11,8 +11,14 @@ export const storeData = async (value, key) => {
 export const getData = async key => {
   try {
     const value = await AsyncStorage.getItem(key);
-    return value;
+    return value.substring(1, value.length - 1);
   } catch (e) {
     // error reading value
   }
+};
+
+export const removeData = async key => {
+  try {
+    await AsyncStorage.removeItem(key);
+  } catch (error) {}
 };
