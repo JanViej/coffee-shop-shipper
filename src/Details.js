@@ -1,4 +1,3 @@
-import React from 'react';
 import { TouchableOpacity, Text, View, FlatList, StyleSheet, ImageBackground, Dimensions } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import Coffee from './assets/image/coffee.svg';
@@ -6,6 +5,9 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import wave from './assets/image/wave.png';
 import { Button } from 'react-native';
 import { size, stubFalse } from 'lodash';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getOrderById } from './redux/order/action'
 
 const styles = StyleSheet.create({
     overview: {
@@ -69,10 +71,10 @@ const styles = StyleSheet.create({
     },
     buttonStyle: {
         borderRadius: 10,
-        width:'80%',
-        textAlign:'center',
-        marginTop:30,
-        paddingStart:100
+        width: '80%',
+        textAlign: 'center',
+        marginTop: 30,
+        paddingStart: 100
     },
     adress: {
         paddingTop: 5,
@@ -125,6 +127,12 @@ const orderDetail = [
 const Details = ({ navigation }) => {
     const route = useRoute();
     const { item } = route.params;
+    const dispatch = useDispatch();
+    const orderDetails = useSelector(state => state.order.currentOrder);
+    const id=item._id;
+    useEffect(() => {
+        dispatch(getOrderById(id));
+    }, []);
     return (
         <View style={styles.container}>
             <View style={styles.header}>

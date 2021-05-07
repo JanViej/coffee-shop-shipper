@@ -1,8 +1,10 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {getListOrder} from './action';
+import {getListOrder,getOrderById} from './action';
 
 export const initialState = {
     listOrder:[],
+    currentOrder:[],
+    loading:true,
 };
 export const {reducer,actions}=createSlice ({
     name:'Order',
@@ -11,7 +13,11 @@ export const {reducer,actions}=createSlice ({
     extraReducers: {
         [getListOrder.fulfilled]: (state, {payload}) => {
             state.listOrder = payload.data;
+            state.loading=false;
         },
+        [getOrderById.fulfilled] : (state,{payload})=> {
+            state.currentOrder=payload;
+        }
     },
 });
 export default reducer

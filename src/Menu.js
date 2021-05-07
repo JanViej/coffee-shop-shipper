@@ -8,7 +8,7 @@ import {
   StyleSheet,
   ImageBackground,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,FlatList
 } from 'react-native';
 import Coffee from './assets/image/coffee.svg';
 import OrderCard from './components/OrderCard'
@@ -94,11 +94,11 @@ const styles = StyleSheet.create({
 const Menu = ({ navigation }) => {
   const dispatch = useDispatch();
   const orders = useSelector(state => state.order.listOrder);
+  const loading=useSelector(state=>state.order.loading);
   useEffect(() => {
     dispatch(getListOrder());
-  }, []);
-  console.log('json order', orders);
-
+  },[]);
+  console.log('loading',loading);
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -110,6 +110,7 @@ const Menu = ({ navigation }) => {
         style={styles.image}
         imageStyle={styles.imageBackground}>
         <Text style={styles.titleDS}>Danh sách đơn hàng</Text>
+        {loading==false ?
         <ScrollView>
           {orders.order.map((item,index) => (
             <View style={styles.overview}>
@@ -121,10 +122,10 @@ const Menu = ({ navigation }) => {
                 <View style={styles.viewDetails}>
                   <Text style={styles.textviewDetails}>Xem chi tiết </Text>
                 </View>
-              </TouchableOpacity>
+              </TouchableOpacity> 
             </View>
           ))}
-        </ScrollView>
+        </ScrollView> : null }
       </ImageBackground>
     </View>
   );
