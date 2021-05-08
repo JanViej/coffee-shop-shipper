@@ -4,7 +4,8 @@ import {getListOrder,getOrderById} from './action';
 export const initialState = {
     listOrder:[],
     currentOrder:[],
-    loading:true,
+    loadingOrders:true,
+    loadingDetails:true
 };
 export const {reducer,actions}=createSlice ({
     name:'Order',
@@ -13,10 +14,11 @@ export const {reducer,actions}=createSlice ({
     extraReducers: {
         [getListOrder.fulfilled]: (state, {payload}) => {
             state.listOrder = payload.data;
-            state.loading=false;
+            state.loadingOrders=false;
         },
         [getOrderById.fulfilled] : (state,{payload})=> {
-            state.currentOrder=payload;
+            state.currentOrder=payload.data.order;
+            state.loadingDetails=false;
         }
     },
 });

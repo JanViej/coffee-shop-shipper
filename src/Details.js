@@ -1,4 +1,12 @@
-import { TouchableOpacity, Text, View, FlatList, StyleSheet, ImageBackground, Dimensions } from 'react-native';
+import {
+    TouchableOpacity,
+    Text,
+    View,
+    FlatList,
+    StyleSheet,
+    ScrollView,
+    Dimensions
+} from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import Coffee from './assets/image/coffee.svg';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -129,10 +137,14 @@ const Details = ({ navigation }) => {
     const { item } = route.params;
     const dispatch = useDispatch();
     const orderDetails = useSelector(state => state.order.currentOrder);
-    const id=item._id;
+    const loadingDetails = useSelector(state => state.order.loadingDetails);
+    const id = item._id;
     useEffect(() => {
         dispatch(getOrderById(id));
-    }, []);
+    }, [id, dispatch]);
+    console.log(id);
+    console.log('ooo', orderDetails);
+    console.log('loadingDetails', loadingDetails);
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -151,16 +163,13 @@ const Details = ({ navigation }) => {
                 <Text style={styles.quantity}>Số lượng</Text>
                 <Text style={styles.price}>Đơn giá</Text>
             </View>
-            <FlatList
-                data={orderDetail}
-                renderItem={({ item }) => <View style={styles.overview}>
+            {orderDetails.drink.map((item, index) => (
+                <View style={styles.overview}>
                     <Text style={styles.name}>{item.name}</Text>
                     <Text style={styles.quantity}>{item.quantity}</Text>
                     <Text style={styles.price}>{item.price}</Text>
-                </View>}
-                keyExtractor={item => item.key}
-                contentContainerStyle={{ paddingLeft: 16, paddingRight: 16 }}
-            />
+                </View>
+            ))}
             <Text style={styles.total}>Tổng: {item.totalPrice}</Text>
             <View style={styles.buttonStyle}>
                 <Button

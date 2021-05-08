@@ -94,11 +94,10 @@ const styles = StyleSheet.create({
 const Menu = ({ navigation }) => {
   const dispatch = useDispatch();
   const orders = useSelector(state => state.order.listOrder);
-  const loading=useSelector(state=>state.order.loading);
+  const loadingOrders=useSelector(state=>state.order.loadingOrders);
   useEffect(() => {
     dispatch(getListOrder());
   },[]);
-  console.log('loading',loading);
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -110,7 +109,7 @@ const Menu = ({ navigation }) => {
         style={styles.image}
         imageStyle={styles.imageBackground}>
         <Text style={styles.titleDS}>Danh sách đơn hàng</Text>
-        {loading==false ?
+        {loadingOrders==false ?
         <ScrollView>
           {orders.order.map((item,index) => (
             <View style={styles.overview}>

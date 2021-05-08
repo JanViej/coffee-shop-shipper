@@ -5,7 +5,7 @@ import { getListOrderApi, getOrderByIdApi } from '../../api/order'
 
 export const getListOrder = createAsyncThunk(
     'order/getListOrder',
-    async (aylopad, thunkAPI) => {
+    async (payload, thunkAPI) => {
         try {
             const token = thunkAPI.getState().staff.token;
             const { data } = await apiWrapper({}, getListOrderApi, {
@@ -26,12 +26,14 @@ export const getOrderById = createAsyncThunk(
     async (payload, thunkAPI) => {
         try {
             const token = thunkAPI.getState().staff.token;
-            const { data } = await apiWrapper({}, getListOrderApi, {
+            console.log('getlistorder',token);
+            console.log("payload",payload);
+            const  {data}  = await apiWrapper({}, getOrderByIdApi,payload, {
                 headers: {
                     Authorization: `Bearer ` + token,
                 },
             });
-            console.log('current Order', data);
+            console.log('payload:',payload);
             return data;
         } catch (error) {
             return thunkAPI.rejectWithValue();
