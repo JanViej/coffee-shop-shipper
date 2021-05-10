@@ -1,19 +1,19 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { apiWrapper } from '../../utils/redux'
 
-import { getListOrderApi, getOrderByIdApi } from '../../api/order'
+import { getListOrderApi, getOrderByIdApi, updateStatusApi } from '../../api/order'
 
 export const getListOrder = createAsyncThunk(
     'order/getListOrder',
     async (payload, thunkAPI) => {
         try {
             const token = thunkAPI.getState().staff.token;
-            const { data } = await apiWrapper({}, getListOrderApi, {
+            console.log('payload listorder',payload);
+            const { data } = await apiWrapper({}, getListOrderApi,payload, {
                 headers: {
                     Authorization: `Bearer ` + token,
                 },
             });
-            console.log('token shipper', token);
             return data;
         } catch (error) {
             return thunkAPI.rejectWithValue();
@@ -26,17 +26,36 @@ export const getOrderById = createAsyncThunk(
     async (payload, thunkAPI) => {
         try {
             const token = thunkAPI.getState().staff.token;
-            console.log('getlistorder',token);
-            console.log("payload",payload);
             const  {data}  = await apiWrapper({}, getOrderByIdApi,payload, {
                 headers: {
                     Authorization: `Bearer ` + token,
                 },
             });
-            console.log('payload:',payload);
             return data;
         } catch (error) {
             return thunkAPI.rejectWithValue();
         }
+    },
+);
+
+export const updateStatus = createAsyncThunk (
+    'order/updateStatus',
+    async (payload,thunkAPI) => {
+        try {
+            console.log(payload.param);
+            const ob={
+                "status":payload.param
+            }
+            const token = thunkAPI.getState().staff.token;
+            const {data} = await apiWrapper({}, updateStatusApi, payload.id, ob, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+      
+            return data;
+          } catch (error) {
+            return thunkAPI.rejectWithValue();
+          }
     },
 );

@@ -2,21 +2,72 @@ import {
     TouchableOpacity,
     Text,
     View,
-    FlatList,
     StyleSheet,
-    ScrollView,
     Dimensions
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import Coffee from './assets/image/coffee.svg';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import wave from './assets/image/wave.png';
 import { Button } from 'react-native';
-import { size, stubFalse } from 'lodash';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOrderById } from './redux/order/action'
+import { getOrderById, updateStatus } from './redux/order/action'
 
+const Details = ({ navigation }) => {
+    const route = useRoute();
+    const { item } = route.params;
+    const dispatch = useDispatch();
+    const orderDetails= useSelector(state => state.order.currentOrder);
+    const loadingDetails = useSelector(state => state.order.loadingDetails);
+    const id = item._id;
+    const data = {
+        id: id,
+        param: 'success'
+    };
+
+    useEffect(() => {
+        dispatch(getOrderById(id));
+    }, [id, dispatch]);
+    const onClickOrder = () => {
+        dispatch(updateStatus(data));
+    }
+    return (
+        <View style={styles.container}>
+            <View style={styles.header}>
+                <TouchableOpacity style={styles.back} onPress={() => navigation.navigate('Menu')}>
+                    <AntDesign name="left" color="#fff" size={18} />
+                </TouchableOpacity>
+                <Text style={styles.title}>Chi tiết đơn hàng</Text>
+                <Coffee style={styles.logo} height={35} width={35} />
+            </View >
+            <Text style={styles.madonhang}>Mã đơn hàng: {orderDetails._id} </Text>
+            <Text style={styles.adress}>Địa chỉ giao hàng: {orderDetails?.user?.address}</Text>
+            <Text style={styles.adress}>Trạng thái đơn hàng: {orderDetails.status}</Text>
+            <Text style={styles.ds}>Danh sách món</Text>
+            <View style={styles.overview} >
+                <Text style={styles.name}>Tên món</Text>
+                <Text style={styles.quantity}>Số lượng</Text>
+                <Text style={styles.price}>Đơn giá</Text>
+            </View>
+            {orderDetails?.drink?.map((item, key) => (
+                <View style={styles.overview}>
+                <Text style={styles.name}>{item.name}</Text>
+                <Text style={styles.quantity}>{item.quantity}</Text>
+                <Text style={styles.price}>{item.price}</Text>
+            </View>
+            ))}
+            <Text style={styles.total}>Tổng: {orderDetails.totalPrice}</Text>
+            <View style={styles.buttonStyle}>
+                <Button
+                    title="Nhận đơn"
+                    color="#1F5D74"
+                    disabled={orderDetails.status=='success' ? true : false}
+                    onPress={onClickOrder.bind(this)}
+                />
+            </View>
+        </View>
+    );
+}
 const styles = StyleSheet.create({
     overview: {
         flexDirection: 'row',
@@ -112,73 +163,8 @@ const styles = StyleSheet.create({
     total: {
         paddingTop: 10,
         color: '#1F5D74',
-        marginStart: 300,
-        fontSize: 20
+        marginStart: 290,
+        fontSize: 16
     }
 })
-const orderDetail = [
-    {
-        key: 1,
-        id: "6059b16670e4e5f618f71f34",
-        name: "trà sữa trân châu ",
-        price: 19,
-        quantity: 1
-    },
-    {
-        key: 2,
-        id: "6059b16670e4e5f618f71f34",
-        name: "trà sữa trân châu đường đen",
-        price: 19,
-        quantity: 1
-    }
-]
-const Details = ({ navigation }) => {
-    const route = useRoute();
-    const { item } = route.params;
-    const dispatch = useDispatch();
-    const orderDetails = useSelector(state => state.order.currentOrder);
-    const loadingDetails = useSelector(state => state.order.loadingDetails);
-    const id = item._id;
-    useEffect(() => {
-        dispatch(getOrderById(id));
-    }, [id, dispatch]);
-    console.log(id);
-    console.log('ooo', orderDetails);
-    console.log('loadingDetails', loadingDetails);
-    return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <TouchableOpacity style={styles.back} onPress={() => navigation.goBack()}>
-                    <AntDesign name="left" color="#fff" size={18} />
-                </TouchableOpacity>
-                <Text style={styles.title}>Chi tiết đơn hàng</Text>
-                <Coffee style={styles.logo} height={35} width={35} />
-            </View >
-            <Text style={styles.madonhang}>Mã đơn hàng: {item._id} </Text>
-            <Text style={styles.adress}>Địa chỉ giao hàng: {item.user.address}</Text>
-            <Text style={styles.adress}>Trạng thái đơn hàng: {item.status}</Text>
-            <Text style={styles.ds}>Danh sách món</Text>
-            <View style={styles.overview} >
-                <Text style={styles.name}>Tên món</Text>
-                <Text style={styles.quantity}>Số lượng</Text>
-                <Text style={styles.price}>Đơn giá</Text>
-            </View>
-            {orderDetails.drink.map((item, index) => (
-                <View style={styles.overview}>
-                    <Text style={styles.name}>{item.name}</Text>
-                    <Text style={styles.quantity}>{item.quantity}</Text>
-                    <Text style={styles.price}>{item.price}</Text>
-                </View>
-            ))}
-            <Text style={styles.total}>Tổng: {item.totalPrice}</Text>
-            <View style={styles.buttonStyle}>
-                <Button
-                    title="Nhận đơn"
-                    color="#1F5D74"
-                />
-            </View>
-        </View>
-    );
-}
-
 export default Details

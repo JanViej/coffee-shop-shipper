@@ -11,9 +11,48 @@ import {
   TouchableOpacity,FlatList
 } from 'react-native';
 import Coffee from './assets/image/coffee.svg';
-import OrderCard from './components/OrderCard'
 import wave from './assets/image/wave.png';
 
+
+const Menu = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const orders = useSelector(state => state.order.listOrder);
+  const loadingOrders=useSelector(state=>state.order.loadingOrders);
+  const param='pending';
+  useEffect(() => {
+    dispatch(getListOrder(param));
+  },[param,dispatch]);
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Coffee style={styles.logo} height={35} width={35} />
+        <Text style={styles.title}>Shipper</Text>
+      </View>
+      <ImageBackground
+        source={wave}
+        style={styles.image}
+        imageStyle={styles.imageBackground}>
+        <Text style={styles.titleDS}>Danh sách đơn hàng</Text>
+        {loadingOrders==false ?
+        <ScrollView>
+          {orders.order.map((item,index) => (
+            <View style={styles.overview}>
+              <Text style={styles.donhang}>Đơn hàng #{item._id}</Text>
+              <Text style={styles.diachi}>Địa chỉ: {item.user.address}</Text>
+              <Text style={styles.trangthai}>Trạng thái:{item.status}</Text>
+              <Text style={styles.ngaytao}>Ngày tạo: {item.createdAt}</Text>
+              <TouchableOpacity onPress={() => navigation.navigate("Details", { item: item })}>
+                <View style={styles.viewDetails}>
+                  <Text style={styles.textviewDetails}>Xem chi tiết </Text>
+                </View>
+              </TouchableOpacity> 
+            </View>
+          ))}
+        </ScrollView> : null }
+      </ImageBackground>
+    </View>
+  );
+};
 const styles = StyleSheet.create({
   container: {
     width: '100%',
@@ -91,42 +130,4 @@ const styles = StyleSheet.create({
     paddingTop: 2,
   }
 });
-const Menu = ({ navigation }) => {
-  const dispatch = useDispatch();
-  const orders = useSelector(state => state.order.listOrder);
-  const loadingOrders=useSelector(state=>state.order.loadingOrders);
-  useEffect(() => {
-    dispatch(getListOrder());
-  },[]);
-  return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Coffee style={styles.logo} height={35} width={35} />
-        <Text style={styles.title}>Shipper</Text>
-      </View>
-      <ImageBackground
-        source={wave}
-        style={styles.image}
-        imageStyle={styles.imageBackground}>
-        <Text style={styles.titleDS}>Danh sách đơn hàng</Text>
-        {loadingOrders==false ?
-        <ScrollView>
-          {orders.order.map((item,index) => (
-            <View style={styles.overview}>
-              <Text style={styles.donhang}>Đơn hàng #{item._id}</Text>
-              <Text style={styles.diachi}>Địa chỉ: {item.user.address}</Text>
-              <Text style={styles.trangthai}>Trạng thái:{item.status}</Text>
-              <Text style={styles.ngaytao}>Ngày tạo: {item.createdAt}</Text>
-              <TouchableOpacity onPress={() => navigation.push("Details", { item: item })}>
-                <View style={styles.viewDetails}>
-                  <Text style={styles.textviewDetails}>Xem chi tiết </Text>
-                </View>
-              </TouchableOpacity> 
-            </View>
-          ))}
-        </ScrollView> : null }
-      </ImageBackground>
-    </View>
-  );
-};
 export default Menu;
