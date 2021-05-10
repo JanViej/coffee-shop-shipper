@@ -11,25 +11,30 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import { Button } from 'react-native';
 import React, { useState, useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOrderById, updateStatus } from './redux/order/action'
+import { getOrderById, updateStatus,getListOrder } from './redux/order/action'
 
 const Details = ({ navigation }) => {
     const route = useRoute();
     const { item } = route.params;
     const dispatch = useDispatch();
     const orderDetails= useSelector(state => state.order.currentOrder);
-    const loadingDetails = useSelector(state => state.order.loadingDetails);
+
     const id = item._id;
+    console.log('id',id);
     const data = {
         id: id,
-        param: 'success'
+        param: 'delivery'
     };
 
     useEffect(() => {
         dispatch(getOrderById(id));
+        console.log('orderDetails',orderDetails)
     }, [id, dispatch]);
     const onClickOrder = () => {
-        dispatch(updateStatus(data));
+        dispatch(updateStatus(data)).then(()=>{
+            dispatch(getOrderById(id));
+            dispatch(getListOrder('pending'));
+        });
     }
     return (
         <View style={styles.container}>
@@ -40,7 +45,7 @@ const Details = ({ navigation }) => {
                 <Text style={styles.title}>Chi tiết đơn hàng</Text>
                 <Coffee style={styles.logo} height={35} width={35} />
             </View >
-            <Text style={styles.madonhang}>Mã đơn hàng: {orderDetails._id} </Text>
+            <Text style={styles.madonhang}>Mã đơn hàng: #{item._id} </Text>
             <Text style={styles.adress}>Địa chỉ giao hàng: {orderDetails?.user?.address}</Text>
             <Text style={styles.adress}>Trạng thái đơn hàng: {orderDetails.status}</Text>
             <Text style={styles.ds}>Danh sách món</Text>

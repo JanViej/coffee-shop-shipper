@@ -21,6 +21,7 @@ const Menu = ({ navigation }) => {
   const param='pending';
   useEffect(() => {
     dispatch(getListOrder(param));
+    console.log('data',orders);
   },[param,dispatch]);
   return (
     <View style={styles.container}>
@@ -33,12 +34,10 @@ const Menu = ({ navigation }) => {
         style={styles.image}
         imageStyle={styles.imageBackground}>
         <Text style={styles.titleDS}>Danh sách đơn hàng</Text>
-        {loadingOrders==false ?
         <ScrollView>
-          {orders.order.map((item,index) => (
+          {orders?.order?.map((item,index) => (
             <View style={styles.overview}>
               <Text style={styles.donhang}>Đơn hàng #{item._id}</Text>
-              <Text style={styles.diachi}>Địa chỉ: {item.user.address}</Text>
               <Text style={styles.trangthai}>Trạng thái:{item.status}</Text>
               <Text style={styles.ngaytao}>Ngày tạo: {item.createdAt}</Text>
               <TouchableOpacity onPress={() => navigation.navigate("Details", { item: item })}>
@@ -48,7 +47,7 @@ const Menu = ({ navigation }) => {
               </TouchableOpacity> 
             </View>
           ))}
-        </ScrollView> : null }
+        </ScrollView>
       </ImageBackground>
     </View>
   );
