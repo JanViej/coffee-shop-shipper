@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {login, logout, getMe} from './actions';
+import {login, logout, getMe,updateStaff} from './actions';
 
 export const initialState = {
   data: [],
@@ -40,7 +40,10 @@ export const {reducer, actions} = createSlice({
     },
     [getMe.fulfilled]: (state, {payload}) => {
       state.data = payload.data.data;
-    }
+    },
+    [updateStaff.fulfilled]: (state, {payload}) => {
+      state.data = payload.data;
+    },
   },
 });
 

@@ -1,7 +1,7 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {apiWrapper} from '../../utils/redux';
 // import api
-import {loginApi, getMeApi} from '../../api/staff';
+import {loginApi, getMeApi, updateStaffApi} from '../../api/staff';
 import {removeData, storeData} from '../../utils';
 
 export const login = createAsyncThunk(
@@ -46,6 +46,29 @@ export const getMe = createAsyncThunk(
       return data;
     } catch (error) {
       console.log('err', error);
+      return thunkAPI.rejectWithValue();
+    }
+  },
+);
+export const updateStaff = createAsyncThunk(
+  'staff/updateStaff',
+  async(payload,thunkAPI) => {
+    try {
+      console.log("staff",payload);
+      const ob= {
+        "username":payload.username,
+        "phone":payload.phone,
+        "address":payload.address
+      }
+      const token = thunkAPI.getState().staff.token;
+      const {data} = await apiWrapper({}, updateStaffApi, ob, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      return data;
+    } catch (error) {
       return thunkAPI.rejectWithValue();
     }
   },

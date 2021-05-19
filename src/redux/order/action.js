@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { apiWrapper } from '../../utils/redux'
 
-import { getListOrderApi, getOrderByIdApi, updateStatusApi } from '../../api/order'
+import { getListOrderApi, getOrderByIdApi, updateStatusApi,getListOrderDeliveryApi,getListOrderSuccessApi } from '../../api/order'
 
 export const getListOrder = createAsyncThunk(
     'order/getListOrder',
@@ -10,6 +10,38 @@ export const getListOrder = createAsyncThunk(
             const token = thunkAPI.getState().staff.token;
             console.log('payload listorder',payload);
             const { data } = await apiWrapper({}, getListOrderApi,payload, {
+                headers: {
+                    Authorization: `Bearer ` + token,
+                },
+            });
+            return data;
+        } catch (error) {
+            return thunkAPI.rejectWithValue();
+        }
+    },
+);
+export const getListOrderSuccess = createAsyncThunk(
+    'order/getListOrderSuccess',
+    async (payload, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().staff.token;
+            const { data } = await apiWrapper({}, getListOrderSuccessApi, {
+                headers: {
+                    Authorization: `Bearer ` + token,
+                },
+            });
+            return data;
+        } catch (error) {
+            return thunkAPI.rejectWithValue();
+        }
+    },
+);
+export const getListOrderDelivery = createAsyncThunk(
+    'order/getListOrderDelivery',
+    async (payload, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().staff.token;
+            const { data } = await apiWrapper({}, getListOrderDeliveryApi, {
                 headers: {
                     Authorization: `Bearer ` + token,
                 },

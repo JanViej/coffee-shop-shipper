@@ -14,80 +14,9 @@ import Feather from 'react-native-vector-icons/Feather';
 import {Avatar} from 'react-native-elements';
 import {Button} from 'react-native-elements';
 import {ScrollView} from 'react-native';
-import {logout, getMe} from './redux/staff/actions';
+import {logout, getMe,updateStaff} from './redux/staff/actions';
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'white',
-    flex: 1,
-    paddingVertical: 15,
-  },
-  header: {
-    flexDirection: 'row',
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#1F5D74',
-    flexGrow: 1,
-    textAlign: 'center',
-  },
-  back: {
-    backgroundColor: '#5fa4b7',
-    padding: 5,
-    borderRadius: 8,
-    marginHorizontal: 10,
-  },
-  edit: {
-    backgroundColor: '#5fa4b7',
-    padding: 5,
-    borderRadius: 8,
-    marginHorizontal: 10,
-  },
-  icon: {
-    backgroundColor: '#5fa4b750',
-    padding: 20,
-    borderRadius: 50,
-    width: 90,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginVertical: 40,
-  },
-  input: {
-    color: '#1F5D74',
-    paddingHorizontal: 10,
-    marginVertical: 10,
-    borderRadius: 10,
-    fontSize: 18,
-    fontWeight: '600',
-    backgroundColor: '#e1eff5',
-    paddingVertical: 15,
-  },
-  data: {
-    flex: 1,
-    marginHorizontal: 20,
-  },
-  wrapper: {
-    alignItems: 'center',
-  },
-  text: {
-    marginTop: 20,
-  },
-  btn: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    marginVertical: 20,
-  },
-  btnContainer: {
-    width: 100,
-    paddingBottom: 20,
-  },
-  buttonStyle: {
-    backgroundColor: '#5ca4b8',
-    borderRadius: 8,
-  },
-});
+
 
 const Account = ({navigation}) => {
   const dispatch = useDispatch();
@@ -125,18 +54,16 @@ const Account = ({navigation}) => {
   };
 
   const onClickSave = () => {
-    // setEdit(false);
-    // dispatch(
-    //   updateUser({
-    //     username: inputUsername || userData.username,
-    //     phone: inputPhoneNo || userData.phone,
-    //     address: inputAddress || userData.address,
-    //   }),
-    // ).then(response => {
-    //   if (!response.error) {
-    //     navigation.push('Splash');
-    //   }
-    // });
+    setEdit(false);
+    const data= {
+      "address":inputAddress||userData.address,
+      
+      "phone":inputPhoneNo||userData.phone,
+      "username": inputUsername||userData.username
+    }
+    dispatch(updateStaff(data)).then(()=>{
+      dispatch(getMe());
+  });
   };
 
   const onClickCancel = () => {
@@ -234,5 +161,77 @@ const Account = ({navigation}) => {
     </ScrollView>
   );
 };
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+    flex: 1,
+    paddingVertical: 15,
+  },
+  header: {
+    flexDirection: 'row',
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#1F5D74',
+    flexGrow: 1,
+    textAlign: 'center',
+  },
+  back: {
+    backgroundColor: '#5fa4b7',
+    padding: 5,
+    borderRadius: 8,
+    marginHorizontal: 10,
+  },
+  edit: {
+    backgroundColor: '#5fa4b7',
+    padding: 5,
+    borderRadius: 8,
+    marginHorizontal: 10,
+  },
+  icon: {
+    backgroundColor: '#5fa4b750',
+    padding: 20,
+    borderRadius: 50,
+    width: 90,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 40,
+  },
+  input: {
+    color: '#1F5D74',
+    paddingHorizontal: 10,
+    marginVertical: 10,
+    borderRadius: 10,
+    fontSize: 18,
+    fontWeight: '600',
+    backgroundColor: '#e1eff5',
+    paddingVertical: 15,
+  },
+  data: {
+    flex: 1,
+    marginHorizontal: 20,
+  },
+  wrapper: {
+    alignItems: 'center',
+  },
+  text: {
+    marginTop: 20,
+  },
+  btn: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    marginVertical: 20,
+  },
+  btnContainer: {
+    width: 100,
+    paddingBottom: 20,
+  },
+  buttonStyle: {
+    backgroundColor: '#5ca4b8',
+    borderRadius: 8,
+  },
+});
 
 export default Account;

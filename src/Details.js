@@ -11,42 +11,40 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import { Button } from 'react-native';
 import React, { useState, useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOrderById, updateStatus,getListOrder } from './redux/order/action'
+import { getOrderById, updateStatus,getListOrder,getListOrderDelivery } from './redux/order/action'
 
 const Details = ({ navigation }) => {
     const route = useRoute();
     const { item } = route.params;
     const dispatch = useDispatch();
     const orderDetails= useSelector(state => state.order.currentOrder);
-
     const id = item._id;
     console.log('id',id);
     const data = {
         id: id,
         param: 'delivery'
     };
-
     useEffect(() => {
         dispatch(getOrderById(id));
-        console.log('orderDetails',orderDetails)
     }, [id, dispatch]);
     const onClickOrder = () => {
         dispatch(updateStatus(data)).then(()=>{
             dispatch(getOrderById(id));
             dispatch(getListOrder('pending'));
+            dispatch(getListOrderDelivery());
         });
     }
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <TouchableOpacity style={styles.back} onPress={() => navigation.navigate('Menu')}>
+                <TouchableOpacity style={styles.back} onPress={() => navigation.goBack()}>
                     <AntDesign name="left" color="#fff" size={18} />
                 </TouchableOpacity>
                 <Text style={styles.title}>Chi tiết đơn hàng</Text>
                 <Coffee style={styles.logo} height={35} width={35} />
             </View >
             <Text style={styles.madonhang}>Mã đơn hàng: #{item._id} </Text>
-            <Text style={styles.adress}>Địa chỉ giao hàng: {orderDetails?.user?.address}</Text>
+            <Text style={styles.address}>Địa chỉ giao hàng: {orderDetails?.user?.address}</Text>
             <Text style={styles.adress}>Trạng thái đơn hàng: {orderDetails.status}</Text>
             <Text style={styles.ds}>Danh sách món</Text>
             <View style={styles.overview} >
@@ -61,15 +59,17 @@ const Details = ({ navigation }) => {
                 <Text style={styles.price}>{item.price}</Text>
             </View>
             ))}
-            <Text style={styles.total}>Tổng: {orderDetails.totalPrice}</Text>
+
+            <Text style={styles.total}>Tổng: {orderDetails.totalPrice} vnđ</Text>
+            {orderDetails.status=='pending' ?
             <View style={styles.buttonStyle}>
                 <Button
                     title="Nhận đơn"
                     color="#1F5D74"
-                    disabled={orderDetails.status=='success' ? true : false}
+                    disabled={orderDetails.status=='delivery' ? true : false}
                     onPress={onClickOrder.bind(this)}
                 />
-            </View>
+            </View> : null }
         </View>
     );
 }
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     total: {
         paddingTop: 10,
         color: '#1F5D74',
-        marginStart: 290,
+        marginStart: 250,
         fontSize: 16
     }
 })

@@ -1,10 +1,12 @@
 import {createSlice} from '@reduxjs/toolkit';
 import { update } from 'lodash';
-import {getListOrder,getOrderById,updateStatus} from './action';
+import {getListOrder,getListOrderDelivery,getListOrderSuccess,getOrderById,updateStatus} from './action';
 
 export const initialState = {
     data:[],
     listOrder:[],
+    listOrderSuccess:[],
+    listOrderDelivery:[],
     currentOrder:[],
     currentOrderDetails:[],
     loadingOrders:true,
@@ -20,6 +22,12 @@ export const {reducer,actions}=createSlice ({
         [getListOrder.fulfilled]: (state, {payload}) => {
             state.listOrder = payload.data;
             state.loadingOrders=false;
+        },
+        [getListOrderSuccess.fulfilled]: (state, {payload}) => {
+            state.listOrderSuccess = payload.data;
+        },
+        [getListOrderDelivery.fulfilled]: (state, {payload}) => {
+            state.listOrderDelivery = payload.data;
         },
         [getOrderById.fulfilled] : (state,{payload})=> {
             state.currentOrder=payload.data.order;
