@@ -9,6 +9,7 @@ import Account from '../Account';
 import History from '../History';
 import Splash from '../Splash';
 import Login from '../Login';
+import Salary from '../Salary'
 import Shipping from '../Shipping'
 import { getListOrder } from '../redux/order/action'
 import  { useState, useEffect } from 'react';
@@ -87,6 +88,7 @@ const MenuStackScreen = () => (
     <MenuStack.Screen name="Shipping" component={Shipping} />
     <MenuStack.Screen name="Menu" component={BottomNavigation} />
     <MenuStack.Screen name="Details" component={Details} />
+    <MenuStack.Screen name="Salary" component={Salary} />
     <MenuStack.Screen name="Login" component={Login} />
   </MenuStack.Navigator>
 );

@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {login, logout, getMe,updateStaff} from './actions';
+import {login, logout, getMe,updateStaff,getSalary} from './actions';
 
 export const initialState = {
   data: [],
@@ -7,6 +7,7 @@ export const initialState = {
   isAuthenticated: false,
   token: '',
   isActive: false,
+  salary:[]
 };
 
 export const {reducer, actions} = createSlice({
@@ -44,6 +45,9 @@ export const {reducer, actions} = createSlice({
     [updateStaff.fulfilled]: (state, {payload}) => {
       state.data = payload.data;
     },
+    [getSalary.fulfilled] : (state,{payload})=> {
+      state.salary=payload.data;
+  },
   },
 });
 

@@ -7,11 +7,8 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import Login from './Login';
-import Signup from './Signup';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
-import {Avatar} from 'react-native-elements';
 import {Button} from 'react-native-elements';
 import {ScrollView} from 'react-native';
 import {logout, getMe,updateStaff} from './redux/staff/actions';
@@ -22,9 +19,8 @@ const Account = ({navigation}) => {
   const dispatch = useDispatch();
   const userData = useSelector(state => state.staff.data);
   const token = useSelector(state => state.staff.token);
-  // const isActive = useSelector(state => state.staff.isActive);
   const isActive = true;
-  
+  const allowEdit=false;
   const [inputUsername, setInputUsername] = useState(userData.username);
   const [inputAddress, setInputAddress] = useState(userData.address);
   const [inputPhoneNo, setInputPhoneNo] = useState(userData.phone);
@@ -109,7 +105,7 @@ const Account = ({navigation}) => {
           <View style={styles.data}>
             <Text style={styles.text}>Your name</Text>
             <TextInput
-              editable={isEdit}
+              editable={allowEdit}
               style={styles.input}
               defaultValue={inputUsername || userData.username}
               onChangeText={onChangeInputUsername}
@@ -140,6 +136,20 @@ const Account = ({navigation}) => {
         )
       }
       
+      {isEdit === false && (
+        <TouchableOpacity onPress={() => navigation.navigate("Salary")}>
+        <View style={styles.viewSalary}>
+        <Button
+            onPress={() => navigation.navigate("Salary")}
+            title="Xem lương"
+            titleStyle={{fontSize: 16}}
+            containerStyle={styles.btnContainer}
+            buttonStyle={styles.buttonStyle}
+          />
+        </View>
+      </TouchableOpacity> 
+      )}
+
       {isEdit && (
         <View style={styles.btn}>
           <Button
@@ -225,13 +235,22 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   btnContainer: {
-    width: 100,
+    width: 120,
     paddingBottom: 20,
   },
   buttonStyle: {
     backgroundColor: '#5ca4b8',
     borderRadius: 8,
   },
+  viewSalary: {
+    paddingTop:30,
+    alignItems:'center'
+  },
+  textViewSalary: {
+    fontSize:18,
+    color: '#1F5D74',
+    fontWeight: 'bold'
+  }
 });
 
 export default Account;
