@@ -1,16 +1,23 @@
-import React, {useEffect, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import { TouchableOpacity, View, Text,ScrollView,StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { TouchableOpacity, View, Text, ScrollView, StyleSheet } from 'react-native';
+import ModalDropdown from 'react-native-modal-dropdown';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Coffee from './assets/image/coffee.svg';
-import {getSalary} from './redux/staff/actions';
+import { getSalary } from './redux/staff/actions';
+
+const options = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
 const Salary = ({ navigation }) => {
     const dispatch = useDispatch();
-    const salary=useSelector(state => state.staff.salary.Salary);
-    console.log('salary',salary);
+    const salary = useSelector(state => state.staff.salary.Salary);
+
+    console.log('salary', salary);
     useEffect(() => {
         dispatch(getSalary(1));
-      }, []);
+    }, []);
+    const onClickSeleclt = (value) => {
+        dispatch(getSalary(value));
+    };
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -18,13 +25,75 @@ const Salary = ({ navigation }) => {
                     <AntDesign name="left" color="#fff" size={18} />
                 </TouchableOpacity>
                 <Text style={styles.title}>Lương</Text>
-
                 <Coffee style={styles.logo} height={35} width={35} />
             </View >
+            <View style={styles.selectmonth}>
+                <Text style={styles.selectText}>Chọn tháng</Text>
+                <ModalDropdown
+                    options={['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12']}
+                    defaultValue='Tháng 1'
+                    style={styles.select}
+                    onSelect={value => onClickSeleclt(options[value])}
+                />
+            </View>
+            <View style={styles.overview1}>
+              <Text style={styles.textView1}>Tổng số ca đã làm </Text>
+              <Text style={styles.textView2}>{salary?.totalShift}</Text>
+            </View>
+            <View style={styles.overview}>
+              <Text style={styles.textView1}>Hệ số lương </Text>
+              <Text style={styles.textView2}>{salary?.coefficient}</Text>
+            </View>
+            <View style={styles.overview}>
+              <Text style={styles.textView1}>Tổng lương </Text>
+              <Text style={styles.textView2}>{salary?.totalSalary}</Text>
+            </View>
+            <View style={styles.overview}>
+              <Text style={styles.textView1}>Trợ cấp </Text>
+              <Text style={styles.textView2}>{salary?.allowance}</Text>
+            </View>
+            <View style={styles.overview}>
+              <Text style={styles.textView1}>Tổng cộng </Text>
+              <Text style={styles.textView2}>{salary?.totalSalary}</Text>
+            </View>
         </View>
     );
 }
 const styles = StyleSheet.create({
+    overview1:{
+        flexDirection: 'row',
+        paddingTop:30,
+        paddingLeft:60
+    },
+    overview: {
+        flexDirection: 'row',
+        paddingTop:10,
+        paddingLeft:60
+    },
+    textView1:{
+        fontSize:16,
+        color: '#1F5D74',
+        width: 200
+    },
+    textView2: {
+        fontSize:16,
+        color: '#1F5D74',
+    },
+    selectmonth: {
+        paddingTop:30,
+        alignItems:'center',
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    selectText:{
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    select: {
+        fontSize:18,
+        width: 300,
+        paddingLeft: 125,
+    },
     header: {
         flexDirection: 'row',
         backgroundColor: '#64A1BD',
@@ -62,7 +131,7 @@ const styles = StyleSheet.create({
         paddingRight: 20,
         justifyContent: 'center',
         alignItems: 'center',
-        marginStart:130,
+        marginStart: 140,
     },
 });
 export default Salary;

@@ -14,6 +14,7 @@ import Coffee from './assets/image/coffee.svg';
 import wave from './assets/image/wave.png';
 import { ActivityIndicator } from 'react-native';
 import moment from 'moment'
+import { keyBy } from 'lodash';
 
 const History = ({navigation}) => {
   const dispatch = useDispatch();
@@ -42,8 +43,8 @@ const History = ({navigation}) => {
         <Text style={styles.titleDS}>Danh sách đơn hàng</Text>
         {orders !=null ?
         <ScrollView>
-          {orders?.order?.map((item,index) => (
-            <View style={styles.overview}>
+          {orders?.order?.map((item,index) =>(
+            <View style={styles.overview} key ={item._id}>
               <Text style={styles.donhang}>Đơn hàng #{item._id}</Text>
               <Text style={styles.ngaytao}>Ngày tạo: {getDate(item.createdAt)}, {getTime(item.createdAt)}p</Text>
               <Text style={styles.trangthai}>{item.status}</Text>

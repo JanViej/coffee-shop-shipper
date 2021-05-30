@@ -44,8 +44,8 @@ const Menu = ({ navigation }) => {
         imageStyle={styles.imageBackground}>
         <Text style={styles.titleDS}>Danh sách đơn hàng</Text>
         <ScrollView>
-          {orders?.order?.map((item,key=item._id) => (
-            <View style={styles.overview}>
+          {orders?.order?.map((item,index) => (
+            <View style={styles.overview} key ={item._id}>
               <Text style={styles.donhang}>Đơn hàng #{item._id}</Text>
               <Text style={styles.ngaytao}>Ngày tạo:  {getDate(item.createdAt)}, {getTime(item.createdAt)}p</Text>
               <Text style={styles.trangthai}>{item.status}</Text>

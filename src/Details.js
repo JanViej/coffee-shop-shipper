@@ -53,7 +53,7 @@ const Details = ({ navigation }) => {
                 <Text style={styles.price}>Đơn giá</Text>
             </View>
             {orderDetails?.drink?.map((item, key) => (
-                <View style={styles.overview}>
+                <View style={styles.overview} key ={item._id}>
                 <Text style={styles.name}>{item.name}</Text>
                 <Text style={styles.quantity}>{item.quantity}</Text>
                 <Text style={styles.price}>{item.price}</Text>
