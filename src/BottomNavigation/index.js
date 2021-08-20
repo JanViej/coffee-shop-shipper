@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
@@ -9,7 +10,8 @@ import Account from '../Account';
 import History from '../History';
 import Splash from '../Splash';
 import Login from '../Login';
-import Salary from '../Salary'
+import Salary from '../Salary';
+import Map from '../Map';
 import Shipping from '../Shipping'
 import { getListOrder } from '../redux/order/action'
 import  { useState, useEffect } from 'react';
@@ -90,6 +92,7 @@ const MenuStackScreen = () => (
     <MenuStack.Screen name="Details" component={Details} />
     <MenuStack.Screen name="Salary" component={Salary} />
     <MenuStack.Screen name="Login" component={Login} />
+    <MenuStack.Screen name="Map" component={Map} />
   </MenuStack.Navigator>
 );
 

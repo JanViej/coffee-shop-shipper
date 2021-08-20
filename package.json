@@ -26,6 +26,7 @@
     "react-native-elements": "^3.3.2",
     "react-native-form-select-picker": "0.0.12",
     "react-native-gesture-handler": "^1.10.3",
+    "react-native-maps": "^0.28.0",
     "react-native-modal-dropdown": "git+https://github.com/Kishanjvaghela/react-native-modal-dropdown.git",
     "react-native-paper": "^4.7.2",
     "react-native-picker-select": "^8.0.4",

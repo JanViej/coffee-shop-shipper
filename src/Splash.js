@@ -19,15 +19,13 @@ const Splash = ({navigation}) => {
     const getToken = async () => {
       const token = await getData('sessionToken');
       // setAuthToken(token);
-      if(token) {
-        console.log('token', token)
+      if (token) {
+        console.log('token', token);
         dispatch(actions.setToken(token));
         navigation.push('Menu');
-      }
-      else {
+      } else {
         navigation.push('Login');
       }
-      
     };
     getToken();
     // eslint-disable-next-line react-hooks/exhaustive-deps
