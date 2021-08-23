@@ -7,17 +7,20 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Coffee from './assets/image/coffee.svg';
 import { getSalary } from './redux/staff/actions';
 
-const options = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
+const options = ['thang_1', 'thang_2', 'thang_3', 'thang_4', 'thang_5', 'thang_6', 'thang_7', 'thang_8', 'thang_9', 'thang_10', 'thang_11', 'thang_12'];
 const Salary = ({ navigation }) => {
     const dispatch = useDispatch();
     const salary = useSelector(state => state.staff.salary.Salary);
 
     console.log('salary', salary);
     useEffect(() => {
-        dispatch(getSalary(1));
+        dispatch(getSalary("thang_1"));
     }, []);
     const onClickSeleclt = (value) => {
         dispatch(getSalary(value));
+    };
+    const getCurrency=(value)=>{
+        return value.toLocaleString('en-US', {style : 'currency', currency : 'VND'});
     };
     return (
         <View style={styles.container}>
@@ -38,12 +41,12 @@ const Salary = ({ navigation }) => {
                 />
             </View>
             <View style={styles.overview1}>
-              <Text style={styles.textView1}>Tổng số ca đã làm </Text>
+              <Text style={styles.textView1}>Tổng số đơn đã nhận </Text>
               <Text style={styles.textView2}>{salary?.totalShift}</Text>
             </View>
             <View style={styles.overview}>
               <Text style={styles.textView1}>Hệ số lương </Text>
-              <Text style={styles.textView2}>{salary?.coefficient}</Text>
+              <Text style={styles.textView2}>{getCurrency(salary?.coefficient)}</Text>
             </View>
             <View style={styles.overview}>
               <Text style={styles.textView1}>Tổng lương </Text>
