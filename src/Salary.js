@@ -20,7 +20,7 @@ const Salary = ({ navigation }) => {
         dispatch(getSalary(value));
     };
     const getCurrency=(value)=>{
-        return value.toLocaleString('en-US', {style : 'currency', currency : 'VND'});
+        return value+" VND";
     };
     return (
         <View style={styles.container}>
@@ -49,16 +49,12 @@ const Salary = ({ navigation }) => {
               <Text style={styles.textView2}>{getCurrency(salary?.coefficient)}</Text>
             </View>
             <View style={styles.overview}>
-              <Text style={styles.textView1}>Tổng lương </Text>
-              <Text style={styles.textView2}>{salary?.totalSalary}</Text>
-            </View>
-            <View style={styles.overview}>
               <Text style={styles.textView1}>Trợ cấp </Text>
-              <Text style={styles.textView2}>{salary?.allowance}</Text>
+              <Text style={styles.textView2}>{getCurrency(salary?.allowance)}</Text>
             </View>
             <View style={styles.overview}>
               <Text style={styles.textView1}>Tổng cộng </Text>
-              <Text style={styles.textView2}>{salary?.totalSalary}</Text>
+              <Text style={styles.textView2}>{getCurrency(salary?.totalSalary)}</Text>
             </View>
         </View>
     );
