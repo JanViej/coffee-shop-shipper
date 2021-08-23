@@ -17,6 +17,7 @@ import {
   updateStatus,
   getListOrder,
   getListOrderDelivery,
+  getListOrderSuccess,
 } from './redux/order/action';
 
 const Details = ({navigation}) => {
@@ -26,10 +27,14 @@ const Details = ({navigation}) => {
   const orderDetails = useSelector(state => state.order.currentOrder);
   const id = item._id;
   console.log('id', id);
-  const data = {
+  const dataOrder = {
     id: id,
     param: 'delivery',
   };
+  const dataDelivered={
+    id: id,
+    param: 'success',
+  }
 
   const handleClickMap = () => {
     navigation.push('Map');
@@ -38,10 +43,18 @@ const Details = ({navigation}) => {
     dispatch(getOrderById(id));
   }, [id, dispatch]);
   const onClickOrder = () => {
-    dispatch(updateStatus(data)).then(() => {
+    dispatch(updateStatus(dataOrder)).then(() => {
       dispatch(getOrderById(id));
       dispatch(getListOrder('pending'));
       dispatch(getListOrderDelivery());
+      navigation.goBack();
+    });
+  };
+  const onClickDelivered=() => {
+    dispatch(updateStatus(dataDelivered)).then(() => {
+      dispatch(getListOrderSuccess());
+      dispatch(getListOrderDelivery());
+      navigation.goBack();
     });
   };
   return (
@@ -108,7 +121,16 @@ const Details = ({navigation}) => {
             onPress={onClickOrder.bind(this)}
           />
         </View>
-      ) : null}
+      ) : orderDetails.status == 'delivery' ? (
+        <View style={styles.buttonStyle}>
+          <Button
+            title="Đã giao hàng"
+            color="#1F5D74"
+            disabled={orderDetails.status == 'pending' ? true : false}
+            onPress={onClickDelivered.bind(this)}
+          />
+        </View>
+      ): null }
     </View>
   );
 };

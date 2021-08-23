@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {  updateStatus,getListOrderSuccess,getListOrderDelivery } from './redux/order/action'
+import { updateStatus, getListOrderSuccess, getListOrderDelivery } from './redux/order/action'
 import {
   Dimensions,
   Text,
@@ -9,18 +9,20 @@ import {
   ImageBackground,
   ScrollView,
   Button,
+  TouchableOpacity
 } from 'react-native';
 import Coffee from './assets/image/coffee.svg';
 import wave from './assets/image/wave.png';
 import moment from 'moment';
 
 
-const Shipping = ({navigation}) => {
+const Shipping = ({ navigation }) => {
   const dispatch = useDispatch();
   const orders = useSelector(state => state.order.listOrderDelivery);
+  console.log(orders);
   useEffect(() => {
     dispatch(getListOrderDelivery());
-  },[]);
+  }, []);
   const getDate = (date) => {
     return moment(new Date(date)).format('DD/MM/YYYY');
   }
@@ -40,23 +42,28 @@ const Shipping = ({navigation}) => {
         imageStyle={styles.imageBackground}>
         <Text style={styles.titleDS}>Danh sách đơn hàng</Text>
         <ScrollView>
-          {orders?.order?.map((item,index) => (
-            <View style={styles.overview} key ={item._id}>
+          {orders?.order?.map((item, index) => (
+            <View style={styles.overview} key={item._id}>
               <Text style={styles.donhang}>Đơn hàng #{item._id}</Text>
-              <Text style={styles.trangthai}>{item.status}</Text>
+              <Text style={styles.trangthai}>Trạng thái: Đang giao hàng</Text>
               <Text style={styles.ngaytao}>Ngày tạo: {getDate(item.createdAt)}, {getTime(item.createdAt)}</Text>
+              <TouchableOpacity onPress={() => navigation.navigate("Details", { item: item })}>
+                <View style={styles.viewDetails}>
+                  <Text style={styles.textviewDetails}>Xem chi tiết đơn hàng </Text>
+                </View>
+              </TouchableOpacity> 
               <View style={styles.buttonStyle}>
                 <Button
-                    title="Đã giao hàng"
-                    color="#1F5D74"
-                    onPress={() => {
-                        dispatch(updateStatus({id:item._id,param:'success'})).then(()=>{
-                            dispatch(getListOrderSuccess());
-                            dispatch(getListOrderDelivery());
-                        });
-                    }}
+                  title="Đã giao hàng"
+                  color="#1F5D74"
+                  onPress={() => {
+                    dispatch(updateStatus({ id: item._id, param: 'success' })).then(() => {
+                      dispatch(getListOrderSuccess());
+                      dispatch(getListOrderDelivery());
+                    });
+                  }}
                 />
-            </View>
+              </View>
             </View>
           ))}
         </ScrollView>
@@ -139,14 +146,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#b8860b',
     borderRadius: 8,
     maxWidth: 200,
-    fontSize:15
+    fontSize: 15
   },
   ngaytao: {
     paddingTop: 2,
   },
   buttonStyle: {
-      paddingTop:5,
-      textAlign:'center',
+    paddingTop: 10,
+    textAlign: 'center',
   }
 });
 export default Shipping;

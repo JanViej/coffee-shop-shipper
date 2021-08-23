@@ -48,7 +48,7 @@ const Menu = ({ navigation }) => {
             <View style={styles.overview} key ={item._id}>
               <Text style={styles.donhang}>Đơn hàng #{item._id}</Text>
               <Text style={styles.ngaytao}>Ngày tạo:  {getDate(item.createdAt)}, {getTime(item.createdAt)}p</Text>
-              <Text style={styles.trangthai}>{item.status}</Text>
+              <Text style={styles.trangthai}>Trạng thái: Chưa nhận đơn</Text>
         
               <TouchableOpacity onPress={() => navigation.navigate("Details", { item: item })}>
                 <View style={styles.viewDetails}>

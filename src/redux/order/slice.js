@@ -11,7 +11,6 @@ export const initialState = {
     currentOrderDetails:[],
     loadingOrders:true,
     loadingDetails:true,
-    updateSuccess:false,
 };
 export const {reducer,actions}=createSlice ({
     name:'Order',
@@ -33,10 +32,6 @@ export const {reducer,actions}=createSlice ({
             state.currentOrder=payload.data.order;
             state.loadingDetails=false;
         },
-        [updateStatus.fulfilled]: (state, {payload}) => {
-            state.data = payload.data.data;
-            updateSuccess=true;
-          },
     },
 });
 export default reducer

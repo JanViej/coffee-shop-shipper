@@ -47,10 +47,10 @@ const History = ({navigation}) => {
             <View style={styles.overview} key ={item._id}>
               <Text style={styles.donhang}>Đơn hàng #{item._id}</Text>
               <Text style={styles.ngaytao}>Ngày tạo: {getDate(item.createdAt)}, {getTime(item.createdAt)}p</Text>
-              <Text style={styles.trangthai}>{item.status}</Text>
+              <Text style={styles.trangthai}>Trạng thái: Đã giao hàng</Text>
               <TouchableOpacity onPress={() => navigation.navigate("Details", { item: item })}>
                 <View style={styles.viewDetails}>
-                  <Text style={styles.textviewDetails}>Xem chi tiết </Text>
+                  <Text style={styles.textviewDetails}>Xem chi tiết  </Text>
                 </View>
               </TouchableOpacity> 
             </View>
